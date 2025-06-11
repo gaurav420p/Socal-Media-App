@@ -1,9 +1,7 @@
 package com.gaurav.Social.Media.App.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +10,7 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String firstName;
     private String lastName;
@@ -19,13 +18,17 @@ public class User {
     private String password;
     private List<Integer> followers=new ArrayList<>();
     private List<Integer> followings=new ArrayList<>();
+    @JsonIgnore
+    @ManyToMany
+    private List<Post> savedPost=new ArrayList<>();
     private String gender;
 
     public User(){
 
     }
 
-    public User(int id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> followings, String gender) {
+
+    public User(int id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> followings, List<Post> savedPost, String gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,6 +36,7 @@ public class User {
         this.password = password;
         this.followers = followers;
         this.followings = followings;
+        this.savedPost = savedPost;
         this.gender = gender;
     }
 
@@ -40,36 +44,36 @@ public class User {
         return id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
@@ -90,6 +94,14 @@ public class User {
 
     public void setFollowings(List<Integer> followings) {
         this.followings = followings;
+    }
+
+    public List<Post> getSavedPost() {
+        return savedPost;
+    }
+
+    public void setSavedPost(List<Post> savedPost) {
+        this.savedPost = savedPost;
     }
 
     public String getGender() {
