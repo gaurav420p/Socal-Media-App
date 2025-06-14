@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 public class StoryController {
+
     @Autowired
     private StoryService storyService;
 
@@ -20,21 +21,13 @@ public class StoryController {
     @PostMapping("/api/story")
     public Story createStory(@RequestBody Story story, @RequestHeader("Authorization") String jwt) {
         User reqUser = userService.findUserByJwt(jwt);
-
-        Story createdStory = storyService.createStory(story, reqUser);
-
-        return createdStory;
+        return storyService.createStory(story, reqUser);
     }
 
     @GetMapping("/api/story/user/{userId}")
-    public List<Story> findUsersStory(@PathVariable Integer userId, @RequestHeader("Authorization") String jwt) {
-
-        User reqUser = userService.findUserByJwt(jwt); // optional: remove if not used
-
-        List<Story> stories = storyService.findStoryByUserId(userId);
-
-        return stories;
+    public List<Story> findUsersStory(@PathVariable Integer userId,
+                                      @RequestHeader("Authorization") String jwt) throws Exception {
+        userService.findUserByJwt(jwt); // Optional: remove if not used
+        return storyService.findStoryByUserId(userId);
     }
-
-
 }
